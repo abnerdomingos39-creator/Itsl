@@ -1,0 +1,190 @@
+
+PROJETO FINAL
+SISTEMA DE GESTÃO E CONSULTA DE CERTIFICADOS
+
+1. OBJETIVO
+Desenvolver uma plataforma web para permitir que alunos consultem o estado dos seus certificados e que a secretaria pedagógica faça a gestão completa dos pedidos.
+
+2. FLUXO DO SISTEMA
+
+2.1 Pedido de Certificado
+- O aluno dirige-se à secretaria pedagógica.
+- A secretaria preenche:
+  * Nome completo
+  * BI
+  * E-mail
+  * Curso
+  * Data do pedido
+
+Ao clicar em "Cadastrar Pedido":
+- O sistema cria a conta do aluno.
+- O sistema cria automaticamente um pedido.
+- O estado inicial fica como PENDENTE.
+- O sistema gera um token de ativação.
+- O sistema envia um e-mail com um link de ativação.
+
+2.2 Ativação da Conta
+O aluno recebe um e-mail contendo um link semelhante a:
+
+https://sistema.escola.ao/ativar/TOKEN
+
+Ao clicar:
+- O sistema valida o token.
+- O aluno cria a sua própria senha.
+- A conta é ativada.
+
+2.3 Login
+O aluno entra usando:
+- BI
+- Senha definida por ele
+
+2.4 Consulta de Estado
+O aluno visualiza:
+- Nome
+- Curso
+- Estado do pedido
+- Data do pedido
+
+O certificado não é disponibilizado para download.
+Apenas o estado é mostrado.
+
+3. ESTADOS DO PEDIDO
+
+- PENDENTE
+- EM_PROCESSAMENTO
+- PRONTO
+- ENTREGUE
+
+4. PROCESSO DE PRODUÇÃO
+
+Enquanto o certificado está a ser produzido:
+Estado = EM_PROCESSAMENTO
+
+Quando estiver concluído:
+Estado = PRONTO
+
+O sistema envia automaticamente um e-mail informando que o certificado está disponível para levantamento.
+
+Quando o aluno levantar:
+Estado = ENTREGUE
+
+O histórico permanece guardado.
+
+5. PAINEL ADMINISTRATIVO
+
+Funcionalidades:
+- Login de administrador
+- Dashboard
+- Pesquisa por Nome
+- Pesquisa por BI
+- Pesquisa por E-mail
+- Cadastro de pedidos
+- Atualização de estado
+- Importação Excel
+- Relatórios
+
+Dashboard:
+- Total de pedidos
+- Total pendentes
+- Total em processamento
+- Total prontos
+- Total entregues
+
+6. IMPORTAÇÃO EXCEL
+
+Formato:
+
+Nome | BI | Email | Curso
+
+O sistema:
+- Lê a planilha
+- Cria os alunos
+- Cria os pedidos
+- Define estado PENDENTE
+- Envia e-mails de ativação
+
+7. BASE DE DADOS
+
+Tabela: alunos
+- id
+- nome
+- bi
+- email
+- curso
+- senha_hash
+- conta_ativada
+- criado_em
+
+Tabela: pedidos
+- id
+- numero_pedido
+- aluno_id
+- estado
+- data_pedido
+- data_pronto
+- data_entrega
+
+Tabela: administradores
+- id
+- nome
+- email
+- senha_hash
+
+Tabela: ativacoes
+- id
+- aluno_id
+- token
+- expira_em
+- utilizado
+
+Tabela: historico_status
+- id
+- pedido_id
+- estado
+- data_registo
+
+8. TECNOLOGIAS
+
+Frontend:
+- HTML5
+- CSS3
+- JavaScript
+
+Backend:
+- Node.js
+- Express.js
+
+Base de Dados:
+- PostgreSQL
+
+Segurança:
+- bcrypt
+- JWT
+
+E-mails:
+- Nodemailer
+
+Importação Excel:
+- xlsx
+- multer
+
+9. SEGURANÇA
+
+- Senhas armazenadas com hash bcrypt.
+- JWT para autenticação.
+- BI único por aluno.
+- Tokens de ativação com validade.
+- Proteção de rotas administrativas.
+- Histórico de alterações preservado.
+
+10. E-MAILS AUTOMÁTICOS
+
+Ativação:
+- Enviado após cadastro do aluno.
+
+Certificado pronto:
+- Enviado quando o estado muda para PRONTO.
+
+11. OBJETIVO FINAL
+
+Reduzir filas na secretaria, melhorar o acompanhamento dos pedidos de certificados e permitir que os alunos consultem o estado do processo sem necessidade de deslocação à escola.
